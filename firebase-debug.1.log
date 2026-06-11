@@ -1,0 +1,112 @@
+[debug] [2026-06-11T06:30:29.964Z] ----------------------------------------------------------------------
+[debug] [2026-06-11T06:30:29.965Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ovt57\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting --debug
+[debug] [2026-06-11T06:30:29.965Z] CLI Version:   15.19.1
+[debug] [2026-06-11T06:30:29.965Z] Platform:      win32
+[debug] [2026-06-11T06:30:29.965Z] Node Version:  v24.11.1
+[debug] [2026-06-11T06:30:29.965Z] Time:          Thu Jun 11 2026 09:30:29 GMT+0300 (Israel Daylight Time)
+[debug] [2026-06-11T06:30:29.965Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-06-11T06:30:30.697Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-11T06:30:30.697Z] > authorizing via signed-in user (ovt5771@gmail.com)
+[debug] [2026-06-11T06:30:30.697Z] [iam] checking project c-g-ltd for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-06-11T06:30:30.698Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:30.698Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:30.698Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions [none]
+[debug] [2026-06-11T06:30:30.698Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions  x-goog-user-project=c-g-ltd
+[debug] [2026-06-11T06:30:30.699Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-11T06:30:31.806Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions 200
+[debug] [2026-06-11T06:30:31.806Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-11T06:30:31.806Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:31.806Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:31.807Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd [none]
+[debug] [2026-06-11T06:30:32.212Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd 200
+[debug] [2026-06-11T06:30:32.213Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd {"projectId":"c-g-ltd","projectNumber":"155444280341","displayName":"c-g-LTD","name":"projects/c-g-ltd","resources":{"hostingSite":"c-g-ltd"},"state":"ACTIVE","etag":"1_ffa6472f-6c80-4ae0-aa47-3b91b08cfdd3"}
+[debug] [2026-06-11T06:30:33.256Z] defaultcredentials: writing to file C:\Users\ovt57\AppData\Roaming\firebase\ovt5771_gmail_com_application_default_credentials.json
+[debug] [2026-06-11T06:30:33.256Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:33.257Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:33.257Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites pageToken=&pageSize=10
+[debug] [2026-06-11T06:30:35.054Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites 200
+[debug] [2026-06-11T06:30:35.054Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites {"sites":[{"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"},{"name":"projects/c-g-ltd/sites/mcholl","defaultUrl":"https://mcholl.web.app","appId":"1:155444280341:web:29c5189c56a855cf8f221c","type":"USER_SITE"}]}
+[debug] [2026-06-11T06:30:35.055Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:35.055Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:35.056Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites 
+[debug] [2026-06-11T06:30:36.032Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites 200
+[debug] [2026-06-11T06:30:36.032Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites {"sites":[{"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"},{"name":"projects/c-g-ltd/sites/mcholl","defaultUrl":"https://mcholl.web.app","appId":"1:155444280341:web:29c5189c56a855cf8f221c","type":"USER_SITE"}]}
+[debug] [2026-06-11T06:30:36.033Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:36.033Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:36.033Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd/webApps/-/config [none]
+[debug] [2026-06-11T06:30:36.717Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd/webApps/-/config 200
+[debug] [2026-06-11T06:30:36.718Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd/webApps/-/config {"projectId":"c-g-ltd","appId":"1:155444280341:web:29c5189c56a855cf8f221c","storageBucket":"c-g-ltd.firebasestorage.app","apiKey":"AIzaSyAhqcOjsn9Vq2xpmhtw1IdFwP3-zn3cD7I","authDomain":"c-g-ltd.firebaseapp.com","messagingSenderId":"155444280341","measurementId":"G-HG9F991F7C","projectNumber":"155444280341","version":"2"}
+[info] 
+   Thank you for trying our early preview of Next.js support on Firebase Hosting.
+   During the preview, support is best-effort and breaking changes can be expected. Proceed with caution.
+   The integration is known to work with Next.js version 12 - 16.0. You may encounter errors.
+
+   Documentation: https://firebase.google.com/docs/hosting/frameworks/nextjs
+   File a bug: https://github.com/firebase/firebase-tools/issues/new?template=bug_report.md
+   Submit a feature request: https://github.com/firebase/firebase-tools/issues/new?template=feature_request.md
+
+   We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
+
+[debug] [2026-06-11T06:30:39.103Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:39.103Z] Checked if tokens are valid: true, expires at: 1781162309410
+[debug] [2026-06-11T06:30:39.103Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd [none]
+[debug] [2026-06-11T06:30:40.186Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd 200
+[debug] [2026-06-11T06:30:40.187Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd {"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"}
+[info] ▲ Next.js 16.2.7 (Turbopack)
+
+[info] - Environments: .env.local, .env.production
+- Experiments (use with caution):
+  · serverActions
+
+
+[info]   Creating an optimized production build ...
+
+[info] 
+
+[info] [289.17ms] [@tailwindcss/postcss] src\app\globals.css
+[  0.04ms]   ↳ Quick bail check
+[ 84.82ms]   ↳ Setup compiler
+[  0.28ms]     ↳ PostCSS AST -> Tailwind CSS AST
+[ 84.52ms]     ↳ Create compiler
+[  0.20ms]   ↳ Register full rebuild paths
+[  1.64ms]   ↳ Setup scanner
+[ 60.73ms]   ↳ Scan for candidates
+[ 21.93ms]   ↳ Register dependency messages
+[ 63.83ms]   ↳ Build utilities
+[ 52.41ms]   ↳ Optimization
+[  2.91ms]     ↳ AST -> CSS
+[ 35.30ms]     ↳ Lightning CSS
+[ 14.17ms]     ↳ CSS -> PostCSS AST
+[  3.04ms]   ↳ Update PostCSS AST
+
+
+[info] 
+[0.28ms] [@tailwindcss/postcss] node_modules\jodit\es2021\jodit.min.css
+
+[info] [0.28ms]   ↳ Quick bail check
+
+
+[info] ✓ Compiled successfully in 8.6s
+
+[info]   Running TypeScript ...
+
+[info] Failed to type check.
+
+
+[info] ./src/features/services/actions.ts:266:13
+Type error: Property 'addMediaToLibrary' does not exist on type 'typeof import("C:/Users/ovt57/Desktop/community-generator-web/src/features/settings/actions")'.
+
+  264 |
+  265 |     const { adminStorage } = await import("@/lib/firebase-admin");
+> 266 |     const { addMediaToLibrary } = await import("@/features/settings/actions");
+      |             ^
+  267 |
+  268 |     // Save to firebase admin storage
+  269 |     const bucket = adminStorage.bucket();
+
+[info] Next.js build worker exited with code: 1 and signal: null
+
+[debug] [2026-06-11T06:30:59.939Z] Error: ENOENT: no such file or directory, open 'C:\Users\ovt57\Desktop\community-generator-web\.next\export-marker.json'
+[error] 
+[error] Error: An unexpected error has occurred.
