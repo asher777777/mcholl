@@ -4,7 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Server, Sparkles, CreditCard, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { DashboardSidebar } from "@/components/layout/DashboardSidebar";
+import { usePathname } from "next/navigation";
+import { AgentSidebarChat } from "@/components/layout/AgentSidebarChat";
+import { NavigationMenuPopup } from "@/components/layout/NavigationMenuPopup";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -21,18 +23,31 @@ export function DashboardShell({
   kesherActive,
   dbActive,
 }: DashboardShellProps) {
+  const pathname = usePathname();
+  
+  // If we are on the main dashboard page, we don't show the AgentSidebarChat
+  // because the main page itself is now the Chat (in AI Mode).
+  const isMainDashboard = pathname === "/dashboard";
 
   return (
-    <div className="flex min-h-[100dvh] bg-slate-50/50" dir="rtl">
-      <DashboardSidebar />
+    <div className="flex min-h-[100dvh] bg-slate-50/50 overflow-hidden" dir="rtl">
       
-      <div className="flex-1 flex flex-col min-w-0 max-w-full">
+      {/* Navigation Popup Menu (Bottom Left) */}
+      <NavigationMenuPopup />
+      
+      {/* Agent Sidebar (Right side / Start side in RTL) */}
+      {!isMainDashboard && (
+        <AgentSidebarChat className="hidden md:flex" />
+      )}
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 max-w-full h-[100dvh] overflow-y-auto">
         <div className="flex flex-col gap-6 p-4 md:p-8 w-full max-w-7xl mx-auto">
           
           {/* Header & Status Indicator Panel */}
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/60 pb-6">
             <div className="space-y-1 text-right">
-              <h1 className="text-2xl md:text-3xl font-black tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-2xl md:text-3xl font-black tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 מרכז בקרה ותפעול
               </h1>
               <p className="text-muted-foreground text-sm">
@@ -114,6 +129,8 @@ export function DashboardShell({
       </div>
 
       {modal}
+      {/* AIAssistant floating bubble is handled inside DashboardViewManager on the main page now, 
+          and AgentSidebarChat handles it on other pages. */}
     </div>
   );
 }

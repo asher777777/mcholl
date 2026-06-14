@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Mail, Plus, Users, Calendar } from "lucide-react";
+import { Mail, Plus, Users, Calendar, Eye, AlertCircle } from "lucide-react";
 import { getCampaigns } from "@/features/emails/actions";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +57,8 @@ export default async function EmailsDashboardPage() {
                   <th className="px-6 py-4">נושא הקמפיין</th>
                   <th className="px-6 py-4">סטטוס</th>
                   <th className="px-6 py-4">נמענים</th>
+                  <th className="px-6 py-4">פתיחות</th>
+                  <th className="px-6 py-4">שגיאות מסירה</th>
                   <th className="px-6 py-4">תאריך שליחה</th>
                 </tr>
               </thead>
@@ -71,9 +73,26 @@ export default async function EmailsDashboardPage() {
                         {campaign.status === "sent" ? "נשלח" : "טיוטה"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-slate-600 flex items-center gap-1.5">
-                      <Users className="w-4 h-4 text-slate-400" />
-                      {campaign.recipientsCount}
+                    <td className="px-6 py-4 text-slate-600">
+                      <div className="flex items-center gap-1.5">
+                        <Users className="w-4 h-4 text-slate-400" />
+                        {campaign.recipientsCount}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-slate-600">
+                      <div className="flex items-center gap-1.5 font-medium text-indigo-600">
+                        <Eye className="w-4 h-4" />
+                        {campaign.opensCount || 0}
+                        <span className="text-xs text-slate-400">
+                          ({campaign.recipientsCount > 0 ? Math.round(((campaign.opensCount || 0) / campaign.recipientsCount) * 100) : 0}%)
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-slate-600">
+                      <div className={`flex items-center gap-1.5 ${campaign.errorCount && campaign.errorCount > 0 ? 'text-red-600 font-medium' : 'text-slate-400'}`}>
+                        <AlertCircle className="w-4 h-4" />
+                        {campaign.errorCount || 0}
+                      </div>
                     </td>
                     <td className="px-6 py-4 text-slate-600">
                       <div className="flex items-center gap-1.5">

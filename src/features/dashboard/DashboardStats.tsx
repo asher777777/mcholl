@@ -18,7 +18,7 @@ export async function DashboardStats() {
       </div>
       {/* Placeholder stats */}
       <div className="rounded-xl border bg-card p-6 shadow-sm">
-        <p className="text-sm font-medium text-muted-foreground">הכנסות החודש (נדרים)</p>
+        <p className="text-sm font-medium text-muted-foreground">הכנסות החודש</p>
         <p className="text-2xl font-bold text-success">₪12,450</p>
       </div>
       <div className="rounded-xl border bg-card p-6 shadow-sm">

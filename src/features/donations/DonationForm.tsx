@@ -246,8 +246,8 @@ export function DonationForm({ amounts, isEditing, onAmountsChange }: DonationFo
 
       {step === "checkout" && !isEditing && (
         <div className="animate-in slide-in-from-right fade-in text-center py-12">
-          <div className="text-xl font-bold text-slate-700 mb-4">רכיב תשלום נדרים פלוס חסר</div>
-          <p className="text-slate-500 mb-6">יש להתקין את רכיב התשלום של נדרים פלוס למערכת זו.</p>
+          <div className="text-xl font-bold text-slate-700 mb-4">רכיב תשלום קשר חסר</div>
+          <p className="text-slate-500 mb-6">יש להתקין את רכיב התשלום של קשר למערכת זו.</p>
           <div className="flex gap-4 justify-center">
             <Button variant="outline" onClick={() => setStep("details")}>חזור אחורה</Button>
             <Button onClick={() => setStep("success")}>דלג להצלחה (לצורכי פיתוח)</Button>

@@ -29,7 +29,7 @@ export const useAuthStore = create<AuthState>()(
       logout: () => set({ user: null, isAuthenticated: false }),
     }),
     {
-      name: "habadnet-auth",
+      name: "hakel-auth",
     }
   )
 );

@@ -5,13 +5,14 @@ import { KesherSettingsForm } from "@/features/kesher/KesherSettingsForm";
 import { AiSettingsForm } from "@/features/ai/AiSettingsForm";
 import { WhatsAppSettingsForm } from "@/features/whatsapp/components/WhatsAppSettingsForm";
 import { GoogleSettingsCard } from "./GoogleSettingsCard";
-import { CreditCard, Bot, MessageCircle, CalendarDays } from "lucide-react";
+import { AccountSettingsForm } from "@/features/users/components/AccountSettingsForm";
+import { CreditCard, Bot, MessageCircle, CalendarDays, UserCog } from "lucide-react";
 
 interface SettingsTabsProps {
   isGoogleConnected: boolean;
 }
 
-type TabType = "kesher" | "google" | "whatsapp" | "ai";
+type TabType = "kesher" | "google" | "whatsapp" | "ai" | "account";
 
 export function SettingsTabs({ isGoogleConnected }: SettingsTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("kesher");
@@ -21,6 +22,7 @@ export function SettingsTabs({ isGoogleConnected }: SettingsTabsProps) {
     { id: "google" as const, label: "יומן Google", icon: CalendarDays, colorClass: "text-indigo-400" },
     { id: "whatsapp" as const, label: "WhatsApp", icon: MessageCircle, colorClass: "text-emerald-400" },
     { id: "ai" as const, label: "Gemini AI", icon: Bot, colorClass: "text-amber-400" },
+    { id: "account" as const, label: "הגדרות חשבון", icon: UserCog, colorClass: "text-purple-400" },
   ];
 
   return (
@@ -106,6 +108,22 @@ export function SettingsTabs({ isGoogleConnected }: SettingsTabsProps) {
               </div>
             </div>
             <AiSettingsForm />
+          </div>
+        )}
+
+        {activeTab === "account" && (
+          <div className="bg-[#111] border border-white/5 rounded-2xl p-6 shadow-xl relative overflow-hidden group animate-in fade-in slide-in-from-bottom-2">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
+            <div className="flex items-center gap-3 mb-6 relative">
+              <div className="p-2.5 bg-purple-500/10 rounded-lg text-purple-400">
+                <UserCog className="w-6 h-6" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-white">הגדרות חשבון ואבטחה</h2>
+                <p className="text-sm text-gray-400">ניהול סיסמה והגדרות אבטחה של המשתמש שלך.</p>
+              </div>
+            </div>
+            <AccountSettingsForm />
           </div>
         )}
       </div>

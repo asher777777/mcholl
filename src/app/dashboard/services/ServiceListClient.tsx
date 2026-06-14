@@ -96,9 +96,9 @@ export function ServiceListClient({ initialServices }: ServiceListClientProps) {
                       disabled={isDeleting === service.slug}
                       className="text-slate-300 hover:text-red-500 transition-colors p-1"
                       title="מחק עמוד"
-                    >
-                      {isDeleting === service.slug ? <Loader2 className="w-4 h-4 animate-spin text-red-500" /> : <Trash2 className="w-4 h-4" />}
-                    </button>
+                      >
+                        {isDeleting === service.slug ? <Loader2 className="w-4 h-4 animate-spin text-red-500" /> : <Trash2 className="w-4 h-4" />}
+                      </button>
                   </div>
 
                   <h3 className="font-bold text-lg text-slate-800 group-hover:text-indigo-600 transition-colors mb-2">

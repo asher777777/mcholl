@@ -119,7 +119,7 @@ export function HomeEditor({
         }
         setSitePages(combined);
       } catch (e) {
-        console.error("Failed to load site pages", e);
+        console.warn("Failed to load site pages", e);
       } finally {
         setIsLoadingPages(false);
       }

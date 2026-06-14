@@ -27,7 +27,7 @@ export function HeroEditor({
   const [sitePages, setSitePages] = useState<any[]>([]);
 
   useEffect(() => {
-    getAllSitePages().then(setSitePages);
+    getAllSitePages().then(setSitePages).catch((e) => console.warn("Failed to load site pages", e));
   }, []);
   const [aiPrompt, setAiPrompt] = useState("");
   const [generatingImage, setGeneratingImage] = useState(false);

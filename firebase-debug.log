@@ -1,42 +1,42 @@
-[debug] [2026-06-11T07:13:01.761Z] ----------------------------------------------------------------------
-[debug] [2026-06-11T07:13:01.762Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ovt57\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
-[debug] [2026-06-11T07:13:01.762Z] CLI Version:   15.19.1
-[debug] [2026-06-11T07:13:01.762Z] Platform:      win32
-[debug] [2026-06-11T07:13:01.762Z] Node Version:  v24.11.1
-[debug] [2026-06-11T07:13:01.762Z] Time:          Thu Jun 11 2026 10:13:01 GMT+0300 (Israel Daylight Time)
-[debug] [2026-06-11T07:13:01.762Z] ----------------------------------------------------------------------
+[debug] [2026-06-14T14:15:53.468Z] ----------------------------------------------------------------------
+[debug] [2026-06-14T14:15:53.469Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ovt57\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
+[debug] [2026-06-14T14:15:53.470Z] CLI Version:   15.19.1
+[debug] [2026-06-14T14:15:53.470Z] Platform:      win32
+[debug] [2026-06-14T14:15:53.470Z] Node Version:  v24.11.1
+[debug] [2026-06-14T14:15:53.470Z] Time:          Sun Jun 14 2026 17:15:53 GMT+0300 (Israel Daylight Time)
+[debug] [2026-06-14T14:15:53.470Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2026-06-11T07:13:02.526Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2026-06-11T07:13:02.526Z] > authorizing via signed-in user (ovt5771@gmail.com)
-[debug] [2026-06-11T07:13:02.526Z] [iam] checking project c-g-ltd for permissions ["firebase.projects.get","firebasehosting.sites.update"]
-[debug] [2026-06-11T07:13:02.527Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:02.527Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:02.527Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions [none]
-[debug] [2026-06-11T07:13:02.527Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions  x-goog-user-project=c-g-ltd
-[debug] [2026-06-11T07:13:02.527Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
-[debug] [2026-06-11T07:13:03.494Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions 200
-[debug] [2026-06-11T07:13:03.494Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
-[debug] [2026-06-11T07:13:03.495Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:03.495Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:03.495Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd [none]
-[debug] [2026-06-11T07:13:03.866Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd 200
-[debug] [2026-06-11T07:13:03.866Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd {"projectId":"c-g-ltd","projectNumber":"155444280341","displayName":"c-g-LTD","name":"projects/c-g-ltd","resources":{"hostingSite":"c-g-ltd"},"state":"ACTIVE","etag":"1_da4a5971-ca04-46f3-ac0d-a76d220aa45d"}
-[debug] [2026-06-11T07:13:04.894Z] defaultcredentials: writing to file C:\Users\ovt57\AppData\Roaming\firebase\ovt5771_gmail_com_application_default_credentials.json
-[debug] [2026-06-11T07:13:04.894Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:04.894Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:04.894Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites pageToken=&pageSize=10
-[debug] [2026-06-11T07:13:06.474Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites 200
-[debug] [2026-06-11T07:13:06.474Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites {"sites":[{"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"},{"name":"projects/c-g-ltd/sites/mcholl","defaultUrl":"https://mcholl.web.app","appId":"1:155444280341:web:29c5189c56a855cf8f221c","type":"USER_SITE"}]}
-[debug] [2026-06-11T07:13:06.475Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:06.475Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:06.475Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites 
-[debug] [2026-06-11T07:13:07.488Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites 200
-[debug] [2026-06-11T07:13:07.488Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites {"sites":[{"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"},{"name":"projects/c-g-ltd/sites/mcholl","defaultUrl":"https://mcholl.web.app","appId":"1:155444280341:web:29c5189c56a855cf8f221c","type":"USER_SITE"}]}
-[debug] [2026-06-11T07:13:07.489Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:07.489Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:07.489Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd/webApps/-/config [none]
-[debug] [2026-06-11T07:13:08.116Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd/webApps/-/config 200
-[debug] [2026-06-11T07:13:08.116Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd/webApps/-/config {"projectId":"c-g-ltd","appId":"1:155444280341:web:29c5189c56a855cf8f221c","storageBucket":"c-g-ltd.firebasestorage.app","apiKey":"AIzaSyAhqcOjsn9Vq2xpmhtw1IdFwP3-zn3cD7I","authDomain":"c-g-ltd.firebaseapp.com","messagingSenderId":"155444280341","measurementId":"G-HG9F991F7C","projectNumber":"155444280341","version":"2"}
+[debug] [2026-06-14T14:15:54.242Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-14T14:15:54.242Z] > authorizing via signed-in user (ovt5771@gmail.com)
+[debug] [2026-06-14T14:15:54.242Z] [iam] checking project c-g-ltd for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-06-14T14:15:54.243Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:54.243Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:54.243Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions [none]
+[debug] [2026-06-14T14:15:54.243Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions  x-goog-user-project=c-g-ltd
+[debug] [2026-06-14T14:15:54.244Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-14T14:15:55.213Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions 200
+[debug] [2026-06-14T14:15:55.213Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/c-g-ltd:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-14T14:15:55.213Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:55.213Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:55.213Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd [none]
+[debug] [2026-06-14T14:15:55.618Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd 200
+[debug] [2026-06-14T14:15:55.619Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd {"projectId":"c-g-ltd","projectNumber":"155444280341","displayName":"c-g-LTD","name":"projects/c-g-ltd","resources":{"hostingSite":"c-g-ltd"},"state":"ACTIVE","etag":"1_da4a5971-ca04-46f3-ac0d-a76d220aa45d"}
+[debug] [2026-06-14T14:15:56.764Z] defaultcredentials: writing to file C:\Users\ovt57\AppData\Roaming\firebase\ovt5771_gmail_com_application_default_credentials.json
+[debug] [2026-06-14T14:15:56.764Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:56.764Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:56.764Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites pageToken=&pageSize=10
+[debug] [2026-06-14T14:15:58.429Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites 200
+[debug] [2026-06-14T14:15:58.429Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites {"sites":[{"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"},{"name":"projects/c-g-ltd/sites/mcholl","defaultUrl":"https://mcholl.web.app","appId":"1:155444280341:web:29c5189c56a855cf8f221c","type":"USER_SITE"}]}
+[debug] [2026-06-14T14:15:58.429Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:58.429Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:58.429Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites 
+[debug] [2026-06-14T14:15:59.641Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites 200
+[debug] [2026-06-14T14:15:59.642Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites {"sites":[{"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"},{"name":"projects/c-g-ltd/sites/mcholl","defaultUrl":"https://mcholl.web.app","appId":"1:155444280341:web:29c5189c56a855cf8f221c","type":"USER_SITE"}]}
+[debug] [2026-06-14T14:15:59.642Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:59.642Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:15:59.642Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd/webApps/-/config [none]
+[debug] [2026-06-14T14:16:00.420Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd/webApps/-/config 200
+[debug] [2026-06-14T14:16:00.420Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/c-g-ltd/webApps/-/config {"projectId":"c-g-ltd","appId":"1:155444280341:web:29c5189c56a855cf8f221c","storageBucket":"c-g-ltd.firebasestorage.app","apiKey":"AIzaSyAhqcOjsn9Vq2xpmhtw1IdFwP3-zn3cD7I","authDomain":"c-g-ltd.firebaseapp.com","messagingSenderId":"155444280341","measurementId":"G-HG9F991F7C","projectNumber":"155444280341","version":"2"}
 [info] 
    Thank you for trying our early preview of Next.js support on Firebase Hosting.
    During the preview, support is best-effort and breaking changes can be expected. Proceed with caution.
@@ -48,11 +48,11 @@
 
    We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
 
-[debug] [2026-06-11T07:13:10.512Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:10.512Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:10.512Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd [none]
-[debug] [2026-06-11T07:13:11.460Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd 200
-[debug] [2026-06-11T07:13:11.460Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd {"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"}
+[debug] [2026-06-14T14:16:02.961Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:16:02.961Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:16:02.962Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd [none]
+[debug] [2026-06-14T14:16:03.852Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd 200
+[debug] [2026-06-14T14:16:03.853Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd {"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"}
 [info] ▲ Next.js 16.2.7 (Turbopack)
 
 [info] - Environments: .env.local, .env.production
@@ -62,23 +62,23 @@
 
 [info]   Creating an optimized production build ...
 
-[info] ✓ Compiled successfully in 8.7s
+[info] ✓ Compiled successfully in 15.6s
 
 [info]   Running TypeScript ...
 
-[info]   Finished TypeScript in 9.5s ...
+[info]   Finished TypeScript in 15.5s ...
 
 [info]   Collecting page data using 27 workers ...
 
-[info]   Generating static pages using 27 workers (0/17) ...
+[info]   Generating static pages using 27 workers (0/20) ...
 
-[info]   Generating static pages using 27 workers (4/17) 
+[info]   Generating static pages using 27 workers (5/20) 
 
-[info]   Generating static pages using 27 workers (8/17) 
+[info]   Generating static pages using 27 workers (10/20) 
 
-[info]   Generating static pages using 27 workers (12/17) 
+[info]   Generating static pages using 27 workers (15/20) 
 
-[info] ✓ Generating static pages using 27 workers (17/17) in 814ms
+[info] ✓ Generating static pages using 27 workers (20/20) in 578ms
 
 [info]   Finalizing page optimization ...
 
@@ -91,6 +91,9 @@
 ├ ƒ /api/checkout
 ├ ƒ /api/cron
 ├ ƒ /api/debug-kesher
+├ ƒ /api/kesher-webhook
+├ ƒ /api/kesher/get-token
+├ ƒ /api/track-email
 ├ ƒ /api/webhooks/[webhookId]
 ├ ○ /checkout
 ├ ○ /checkout/success
@@ -104,6 +107,7 @@
 ├ ƒ /dashboard/receipts
 ├ ƒ /dashboard/services
 ├ ƒ /dashboard/settings
+├ ƒ /dashboard/users
 ├ ƒ /dashboard/whatsapp
 ├ ○ /features/content-marketing
 ├ ○ /features/crm
@@ -118,8 +122,8 @@
 └ ƒ /test-db
 
 
-
-[info] ○  (Static)   prerendered as static content
+[info] 
+○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
 
 
@@ -129,33 +133,35 @@
 [info]  • use of revalidate /services-pages
 [info]  • non-static component /api/auth/[...nextauth]/route
 [info]  • non-static component /api/checkout/route
-[debug] [2026-06-11T07:13:34.677Z]  • non-static component /api/cron/route
-[debug] [2026-06-11T07:13:34.677Z]  • non-static component /api/debug-kesher/route
-[debug] [2026-06-11T07:13:34.677Z]  • non-static component /api/webhooks/[webhookId]/route
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/automations/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/calendar/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/crm/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/emails/create/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/emails/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/receipts/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/services/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/settings/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /dashboard/whatsapp/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /landing/[id]/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /post/[slug]/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /service/[slug]/page
-[debug] [2026-06-11T07:13:34.678Z]  • non-static component /test-db/page
-[info]  • and 17 other reasons, use --debug to see more
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /api/cron/route
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /api/debug-kesher/route
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /api/kesher-webhook/route
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /api/kesher/get-token/route
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /api/track-email/route
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /api/webhooks/[webhookId]/route
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/automations/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/calendar/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/crm/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/emails/create/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/emails/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/receipts/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/services/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/settings/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/users/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /dashboard/whatsapp/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /landing/[id]/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /post/[slug]/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /service/[slug]/page
+[debug] [2026-06-14T14:16:39.730Z]  • non-static component /test-db/page
+[info]  • and 21 other reasons, use --debug to see more
 [info] 
-[debug] [2026-06-11T07:13:35.122Z] skipping /content-pages due to revalidate
-[debug] [2026-06-11T07:13:35.122Z] skipping /landing-pages due to revalidate
-[debug] [2026-06-11T07:13:35.122Z] skipping /services-pages due to revalidate
-[debug] [2026-06-11T07:13:40.571Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:40.571Z] Checked if tokens are valid: true, expires at: 1781165010854
-[debug] [2026-06-11T07:13:40.571Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd [none]
-[debug] [2026-06-11T07:13:41.827Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd 200
-[debug] [2026-06-11T07:13:41.827Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd {"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"}
-[debug] [2026-06-11T07:13:42.399Z] Error: EPERM: operation not permitted, symlink 'C:\Users\ovt57\Desktop\community-generator-web\node_modules\firebase-admin' -> 'C:\Users\ovt57\Desktop\community-generator-web\.firebase\c-g-ltd\functions\.next\node_modules\firebase-admin-a14c8a5423a75469'
-[error] 
-[error] Error: An unexpected error has occurred.
+[debug] [2026-06-14T14:16:40.200Z] skipping /content-pages due to revalidate
+[debug] [2026-06-14T14:16:40.200Z] skipping /landing-pages due to revalidate
+[debug] [2026-06-14T14:16:40.200Z] skipping /services-pages due to revalidate
+[debug] [2026-06-14T14:16:42.017Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:16:42.017Z] Checked if tokens are valid: true, expires at: 1781448340778
+[debug] [2026-06-14T14:16:42.017Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd [none]
+[debug] [2026-06-14T14:16:43.379Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd 200
+[debug] [2026-06-14T14:16:43.379Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/c-g-ltd/sites/c-g-ltd {"name":"projects/c-g-ltd/sites/c-g-ltd","defaultUrl":"https://c-g-ltd.web.app","type":"DEFAULT_SITE"}
+[debug] [2026-06-14T14:16:44.386Z] Error: EPERM: operation not permitted, symlink 'C:\Users\ovt57\Desktop\community-generator-web\node_modules\firebase-admin' -> 'C:\Users\ovt57\Desktop\community-generator-web\.firebase\c-g-ltd\functions\.next\node_modules\firebase-admin-a14c8a5423a75469'

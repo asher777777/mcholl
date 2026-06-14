@@ -43,7 +43,7 @@ export interface LogicAction {
 
 export interface FormConfig {
   enabled: boolean;
-  form_type: "standard" | "payment";
+  form_type: "standard" | "payment" | "register";
   submit_button_text: string;
   submit_button_bg_color: string;
   submit_button_text_color: string;
@@ -71,6 +71,7 @@ export interface FormConfig {
   custom_success_modal_content?: string;
   custom_success_modal_image_url?: string;
   crm_save_step?: number;
+  register_role?: "DEVELOPING" | "TRIAL";
 }
 
 interface CRMFormBuilderProps {
@@ -305,19 +306,34 @@ export function CRMFormBuilder({ value: rawValue, onChange }: CRMFormBuilderProp
             />
           </div>
           {value.enabled && (
-            <div className={`flex items-center gap-2 px-4 py-2.5 rounded-full border shadow-sm transition-all ${value.form_type === 'payment' ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-slate-200'}`}>
-              <label className={`text-sm font-bold cursor-pointer flex items-center gap-1.5 ${value.form_type === 'payment' ? 'text-indigo-700' : 'text-slate-600'}`} htmlFor="form-payment-toggle">
-                <Coins className={`w-4 h-4 ${value.form_type === 'payment' ? 'text-indigo-600' : 'text-slate-400'}`} />
-                טופס תשלום (נדרים פלוס):
-              </label>
-              <input
-                id="form-payment-toggle"
-                type="checkbox"
-                checked={value.form_type === "payment"}
-                onChange={(e) => updateConfig({ form_type: e.target.checked ? "payment" : "standard" })}
-                className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer"
-              />
-            </div>
+            <>
+              <div className={`flex items-center gap-2 px-4 py-2.5 rounded-full border shadow-sm transition-all ${value.form_type === 'payment' ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-slate-200'}`}>
+                <label className={`text-sm font-bold cursor-pointer flex items-center gap-1.5 ${value.form_type === 'payment' ? 'text-indigo-700' : 'text-slate-600'}`} htmlFor="form-payment-toggle">
+                  <Coins className={`w-4 h-4 ${value.form_type === 'payment' ? 'text-indigo-600' : 'text-slate-400'}`} />
+                  טופס תשלום:
+                </label>
+                <input
+                  id="form-payment-toggle"
+                  type="checkbox"
+                  checked={value.form_type === "payment"}
+                  onChange={(e) => updateConfig({ form_type: e.target.checked ? "payment" : "standard" })}
+                  className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer"
+                />
+              </div>
+              <div className={`flex items-center gap-2 px-4 py-2.5 rounded-full border shadow-sm transition-all ${value.form_type === 'register' ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-slate-200'}`}>
+                <label className={`text-sm font-bold cursor-pointer flex items-center gap-1.5 ${value.form_type === 'register' ? 'text-indigo-700' : 'text-slate-600'}`} htmlFor="form-register-toggle">
+                  <Sparkles className={`w-4 h-4 ${value.form_type === 'register' ? 'text-indigo-600' : 'text-slate-400'}`} />
+                  הרשמת משתמש:
+                </label>
+                <input
+                  id="form-register-toggle"
+                  type="checkbox"
+                  checked={value.form_type === "register"}
+                  onChange={(e) => updateConfig({ form_type: e.target.checked ? "register" : "standard" })}
+                  className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer"
+                />
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -885,8 +901,26 @@ export function CRMFormBuilder({ value: rawValue, onChange }: CRMFormBuilderProp
                   >
                     <option value="standard">טופס לידים / יצירת קשר רגיל</option>
                     <option value="payment">טופס תרומות ותשלום (Nedarim API)</option>
+                    <option value="register">טופס הרשמת משתמש למערכת</option>
                   </select>
                 </div>
+
+                {value.form_type === "register" && (
+                  <div className="animate-in slide-in-from-top-2 duration-300">
+                    <label className="block font-semibold mb-1 text-slate-650">תפקיד המשתמש החדש שייווצר</label>
+                    <select
+                      value={value.register_role || "TRIAL"}
+                      onChange={(e) => updateConfig({ register_role: e.target.value as "DEVELOPING" | "TRIAL" })}
+                      className="w-full bg-slate-50 text-slate-800 border rounded-xl p-2.5 outline-none font-bold"
+                    >
+                      <option value="TRIAL">משתמש ניסיון ל-14 יום (Trial)</option>
+                      <option value="DEVELOPING">משתמש מתפתח (Developing)</option>
+                    </select>
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      * המערכת תיצור משתמש חדש לאחר שליחת הטופס ותעניק לו את ההרשאה הנבחרת. חובה למפות שדות 'דוא"ל' ו-'טלפון' (טלפון ישמש כסיסמה זמנית במידה ולא יוגדר אחרת).
+                    </p>
+                  </div>
+                )}
 
                 {value.form_type === "payment" && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in slide-in-from-top-2 duration-300">
@@ -1136,7 +1170,7 @@ export function CRMFormBuilder({ value: rawValue, onChange }: CRMFormBuilderProp
                           >
                             <option value="redirect">העבר לקישור (Redirect)</option>
                             <option value="modal">הצג מודל תודה אישי (HTML)</option>
-                            <option value="payment">העבר לתשלום (נדרים)</option>
+                            <option value="payment">העבר לתשלום (קשר)</option>
                           </select>
                           {rule.action_type !== "payment" && (
                             <input

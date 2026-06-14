@@ -1,8 +1,7 @@
 "use server";
 
 import { adminDb, adminStorage } from "@/lib/firebase-admin";
-import admin from "firebase-admin";
-const { FieldValue } = admin.firestore;
+import { FieldValue } from "firebase-admin/firestore";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { revalidatePath } from "next/cache";
 import { getAiSettings } from "@/features/ai/actions";
@@ -109,6 +108,12 @@ export async function generatePageWithAI(prompt: string, slug: string, type: 'se
   try {
     const session = await auth();
     if (!session?.user) throw new Error("Unauthorized");
+
+    const { checkFeatureLimit } = await import("@/features/users/actions");
+    const limitCheck = await checkFeatureLimit(session.user.id!, "ai");
+    if (!limitCheck.allowed) {
+      return { success: false, error: "LIMIT_REACHED:" + ('message' in limitCheck ? limitCheck.message : "") };
+    }
 
     // Try to get API key from env, then from Firebase settings
     let apiKey = process.env.GEMINI_API_KEY || "";
@@ -217,6 +222,12 @@ export async function generateHeroImageWithAI(prompt: string) {
   try {
     const session = await auth();
     if (!session?.user) throw new Error("Unauthorized");
+
+    const { checkFeatureLimit } = await import("@/features/users/actions");
+    const limitCheck = await checkFeatureLimit(session.user.id!, "ai");
+    if (!limitCheck.allowed) {
+      return { success: false, error: "LIMIT_REACHED:" + ('message' in limitCheck ? limitCheck.message : "") };
+    }
 
     let apiKey = process.env.GEMINI_API_KEY || "";
     if (!apiKey) {

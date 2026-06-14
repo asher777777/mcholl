@@ -1,8 +1,7 @@
 "use server";
 
 import { adminDb } from "@/lib/firebase-admin";
-import admin from "firebase-admin";
-const { FieldValue } = admin.firestore;
+import { FieldValue } from "firebase-admin/firestore";
 import { auth } from "@/lib/auth";
 import { Contact } from "./types";
 import { revalidatePath } from "next/cache";
@@ -204,6 +203,12 @@ export async function createContact(contactData: Partial<Contact>) {
     
     if (!contactData.conta_name || !contactData.conta_phone) {
       throw new Error("שם וטלפון הם שדות חובה");
+    }
+
+    const { checkFeatureLimit } = await import("@/features/users/actions");
+    const limitCheck = await checkFeatureLimit(ownerId, "contacts");
+    if (!limitCheck.allowed) {
+      throw new Error("LIMIT_REACHED:" + ('message' in limitCheck ? limitCheck.message : ""));
     }
 
     const newContact: Omit<Contact, "id"> = {
@@ -412,6 +417,9 @@ export async function importContacts(importedContacts: Partial<Contact>[]) {
     let updated = 0;
     let skipped = 0;
 
+    const { checkFeatureLimit } = await import("@/features/users/actions");
+    const limitCheck = await checkFeatureLimit(ownerId, "contacts");
+
     for (const cData of importedContacts) {
       if (!cData.conta_name) {
         skipped++;
@@ -438,6 +446,12 @@ export async function importContacts(importedContacts: Partial<Contact>[]) {
         if (!phoneSnap.empty) {
           existingDocId = phoneSnap.docs[0].id;
         }
+      }
+
+      if (!existingDocId && !limitCheck.allowed) {
+        // Can't create new if limit reached
+        skipped++;
+        continue;
       }
 
       const dbData: Omit<Contact, "id"> = {
@@ -506,7 +520,7 @@ export async function importContacts(importedContacts: Partial<Contact>[]) {
 export async function submitCRMForm(params: {
   formId: string;
   formTitle: string;
-  formType: "standard" | "payment";
+  formType: "standard" | "payment" | "register";
   formData: Record<string, string>;
   embeddingPostId?: string;
   embeddingPostTitle?: string;
@@ -516,7 +530,7 @@ export async function submitCRMForm(params: {
 }) {
   try {
     const ownerId = await getUserId();
-    const { formData, formConfig, formTitle, embeddingPostTitle, status, amountPaid } = params;
+    const { formData, formConfig, formTitle, embeddingPostTitle, status, amountPaid, formType } = params;
 
     const contactData: Record<string, any> = {};
 
@@ -554,6 +568,37 @@ export async function submitCRMForm(params: {
     };
     const phone = normalizePhone(rawPhone);
     contactData.conta_phone = phone;
+
+    // --- REGISTRATION LOGIC ---
+    if (formType === "register") {
+      const email = contactData.email;
+      if (!email) {
+        throw new Error("חובה למפות שדה לדוא״ל עבור טופס הרשמה.");
+      }
+
+      const usersRef = adminDb.collection("users");
+      const existingUser = await usersRef.where("username", "==", email.toLowerCase()).get();
+      if (existingUser.empty) {
+        const role = formConfig.register_role || "TRIAL";
+        const newUser: any = {
+          username: email.toLowerCase(),
+          email: email,
+          name: contactData.conta_name || "",
+          password: phone, // phone as temporary password
+          role: role,
+          createdAt: new Date().toISOString()
+        };
+
+        if (role === "TRIAL") {
+          const expires = new Date();
+          expires.setDate(expires.getDate() + 14);
+          newUser.trialExpiresAt = expires.toISOString();
+        }
+
+        await usersRef.add(newUser);
+      }
+    }
+    // -------------------------
 
     const finalOwnerId = formConfig.crm_owner_id || ownerId;
     const contactsRef = adminDb.collection("contacts");
@@ -643,7 +688,7 @@ export async function submitCRMForm(params: {
       });
       resolvedMsg = resolvedMsg.replace(/{סכום}/g, String(amountPaid || formConfig.payment_amount || 0));
       resolvedMsg = resolvedMsg.replace(/{עמוד}/g, embeddingPostTitle || "");
-      resolvedMsg = resolvedMsg.replace(/{link_kabala}/g, "https://habadnet.co.il/receipt/mock");
+      resolvedMsg = resolvedMsg.replace(/{link_kabala}/g, "https://hakel.club/receipt/mock");
 
       finalWhatsAppMessage = resolvedMsg;
       whatsappSent = true;

@@ -26,7 +26,7 @@ export function ServicesGridEditor({ items, onUpdate }: ServicesGridEditorProps)
   const [availablePages, setAvailablePages] = useState<any[]>([]);
 
   useEffect(() => {
-    getAllSitePages().then(setAvailablePages);
+    getAllSitePages().then(setAvailablePages).catch((e) => console.warn("Failed to load site pages", e));
   }, []);
 
   const handlePageSelect = (pageUrl: string) => {

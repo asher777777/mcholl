@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { generatePageWithAI } from "@/features/services/actions";
 import { Loader2, Wand2, Plus, Layout, Sparkles, FileText, X } from "lucide-react";
@@ -45,6 +45,25 @@ export function ServiceForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+
+  // Listen for global open modal events or URL params
+  useEffect(() => {
+    // Check URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("modal") === "create-service") {
+      setIsOpen(true);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    // Check Custom Events
+    const handleOpenModal = (e: any) => {
+      if (e.detail === "create-service") {
+        setIsOpen(true);
+      }
+    };
+    window.addEventListener("open-ai-modal", handleOpenModal);
+    return () => window.removeEventListener("open-ai-modal", handleOpenModal);
+  }, []);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,7 +118,7 @@ export function ServiceForm() {
     try {
       const seoPrompt = `הוראות המשתמש ומילות מפתח: ${seoInstructions}. אנא צור עמוד תוכן מעוצב שהמילים אותם בחר המשתמש יהיו מילות המפתח. העמוד יכיל תוכן איכותי לפי הוראות המשתמש. חובה לכתוב יותר מ-500 מילים. השתמש בתבנית עורך הבית עבור עמוד זה.`;
       
-      const result = await generatePageWithAI(seoPrompt, seoSlug, "post", "חם, מקרב ומזמין", "תורמים ושותפים", ['hero', 'richContent', 'contact']);
+      const result = await generatePageWithAI(seoPrompt, seoSlug, "post", "חם, מקרב ומזמין", "תורמים ושותפים", ['hero', 'mainContent', 'richContent', 'contact']);
       
       if (result.success) {
         alert("עמוד ה-SEO נוצר בהצלחה!");

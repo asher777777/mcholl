@@ -19,7 +19,7 @@ export default function AutomationBuilder({ automation, onClose, onSave }: Props
   const [origin, setOrigin] = useState("");
 
   useEffect(() => {
-    setOrigin(window.location.origin);
+    setOrigin(process.env.NEXT_PUBLIC_APP_URL || "https://hakel.club");
   }, []);
 
   const handleSave = async () => {
@@ -50,6 +50,9 @@ export default function AutomationBuilder({ automation, onClose, onSave }: Props
         break;
       case "generate_ai_post":
         newStep = { type, config: { promptTemplate: "כתוב פוסט על {{topic}}", tone: "מקצועי" } };
+        break;
+      case "crm_update_with_receipt":
+        newStep = { type, config: { phoneField: "{{customer_phone}}", amountField: "{{total}}", documentNumberField: "{{doc_number}}", documentUrlField: "{{doc_url}}" } };
         break;
       default:
         return;
@@ -197,6 +200,7 @@ export default function AutomationBuilder({ automation, onClose, onSave }: Props
                     {step.type === 'email_send' && <Mail className="w-6 h-6 text-rose-500" />}
                     {step.type === 'create_invoice' && <FileText className="w-6 h-6 text-amber-500" />}
                     {step.type === 'generate_ai_post' && <Sparkles className="w-6 h-6 text-purple-500" />}
+                    {step.type === 'crm_update_with_receipt' && <FileText className="w-6 h-6 text-indigo-500" />}
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-800">
@@ -206,6 +210,7 @@ export default function AutomationBuilder({ automation, onClose, onSave }: Props
                       {step.type === 'email_send' && 'שלח אימייל'}
                       {step.type === 'create_invoice' && 'הפקת קבלה (Kesher)'}
                       {step.type === 'generate_ai_post' && 'יצירת פוסט ב-AI'}
+                      {step.type === 'crm_update_with_receipt' && 'עדכן איש קשר עם נתוני קבלה'}
                     </h3>
                   </div>
                 </div>
@@ -229,6 +234,15 @@ export default function AutomationBuilder({ automation, onClose, onSave }: Props
                     <InputGroup label="מזהה איש קשר (Contact ID)" value={(step.config as any).contactIdField} onChange={v => updateStepConfig(index, 'contactIdField', v)} />
                     <InputGroup label="כותרת" value={(step.config as any).title} onChange={v => updateStepConfig(index, 'title', v)} />
                     <InputGroup label="תוכן התזכורת" value={(step.config as any).text} onChange={v => updateStepConfig(index, 'text', v)} />
+                  </>
+                )}
+
+                {step.type === 'crm_update_with_receipt' && (
+                  <>
+                    <InputGroup label="טלפון לזיהוי לקוח (חובה)" value={(step.config as any).phoneField} onChange={v => updateStepConfig(index, 'phoneField', v)} />
+                    <InputGroup label="סכום לתשלום" value={(step.config as any).amountField} onChange={v => updateStepConfig(index, 'amountField', v)} />
+                    <InputGroup label="מספר מסמך" value={(step.config as any).documentNumberField} onChange={v => updateStepConfig(index, 'documentNumberField', v)} />
+                    <InputGroup label="קישור למסמך (URL)" value={(step.config as any).documentUrlField} onChange={v => updateStepConfig(index, 'documentUrlField', v)} />
                   </>
                 )}
 
@@ -285,6 +299,7 @@ export default function AutomationBuilder({ automation, onClose, onSave }: Props
               <option value="" disabled>+ הוסף פעולה (Action)</option>
               <option value="crm_create_contact">CRM: עדכון/יצירת איש קשר</option>
               <option value="crm_add_reminder">CRM: הוספת תזכורת לפולואפ</option>
+              <option value="crm_update_with_receipt">EZcount/CRM: עדכון איש קשר עם פרטי קבלה</option>
               <option value="whatsapp_send">וואטסאפ: שליחת הודעה</option>
               <option value="email_send">מייל: שליחת אימייל</option>
               <option value="create_invoice">קשר/סליקה: הפקת קבלה</option>

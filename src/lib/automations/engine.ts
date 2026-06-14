@@ -13,7 +13,8 @@ export type ActionStep =
   | { type: "email_send"; config: { contactIdField: string; emailField: string; subject: string; bodyTemplate: string } }
   | { type: "create_invoice"; config: { nameField: string; amountField: string; description: string; phoneField?: string } }
   | { type: "generate_ai_post"; config: { promptTemplate: string; tone: string } }
-  | { type: "calendar_create_event"; config: { titleField: string; descriptionField?: string; timeField: string; type: "task" | "meeting" | "reminder" } };
+  | { type: "calendar_create_event"; config: { titleField: string; descriptionField?: string; timeField: string; type: "task" | "meeting" | "reminder" } }
+  | { type: "crm_update_with_receipt"; config: { phoneField: string; amountField: string; documentNumberField: string; documentUrlField: string } };
 
 export interface Automation {
   id: string;
@@ -136,6 +137,41 @@ async function executeStep(step: ActionStep, payload: any, ownerId: string) {
       const currentEvents = docSnap.data()?.events || [];
       await docRef.update({ events: [newEvent, ...currentEvents], updatedAt: new Date().toISOString() });
       return { status: "reminder_added" };
+    }
+
+    case "crm_update_with_receipt": {
+      const conta_phone = parseTemplate(step.config.phoneField, payload);
+      const amount = parseTemplate(step.config.amountField, payload);
+      const docNum = parseTemplate(step.config.documentNumberField, payload);
+      const docUrl = parseTemplate(step.config.documentUrlField, payload);
+      
+      if (!conta_phone) {
+        throw new Error("CRM Receipt Update: Phone is required to identify contact.");
+      }
+
+      const contactsRef = adminDb.collection("contacts");
+      const phoneSnap = await contactsRef
+        .where("ownerId", "==", ownerId)
+        .where("conta_phone", "==", conta_phone)
+        .limit(1)
+        .get();
+
+      if (phoneSnap.empty) {
+         return { status: "not_found", message: "Contact not found for receipt update" };
+      }
+
+      const contactId = phoneSnap.docs[0].id;
+      const currentEvents = phoneSnap.docs[0].data().events || [];
+      const newEvent = {
+        time: new Date().toISOString(),
+        title: "קבלה חדשה (אוטומציה/EZcount)",
+        text: `הופקה קבלה מס' ${docNum || '-'} על סך ${amount || '-'} ₪.\nקישור למסמך: ${docUrl || 'לא סופק'}`
+      };
+      await contactsRef.doc(contactId).update({
+        events: [newEvent, ...currentEvents],
+        updatedAt: new Date().toISOString()
+      });
+      return { status: "receipt_updated", contactId };
     }
 
     case "email_send": {

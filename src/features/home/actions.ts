@@ -584,8 +584,25 @@ export async function savePageConfig(collectionName: string, docId: string, cont
     }
 
     const docRef = adminDb.collection(collectionName).doc(docId);
+    
+    if (collectionName === "landing") {
+      const { checkFeatureLimit } = await import("@/features/users/actions");
+      const limitCheck = await checkFeatureLimit(session.user.id!, "landing_pages");
+      
+      // We need to check if this is a new document or existing
+      const docSnap = await docRef.get();
+      if (!docSnap.exists && !limitCheck.allowed) {
+        throw new Error("LIMIT_REACHED:" + ('message' in limitCheck ? limitCheck.message : ""));
+      }
+    }
+
     console.log("Saving to firestore...");
-    await docRef.set({ ...content, updatedAt: new Date().toISOString() }, { merge: true });
+    const dataToSave = JSON.parse(JSON.stringify({ 
+      ...content, 
+      ownerId: session.user.id || session.user.email || "unknown",
+      updatedAt: new Date().toISOString() 
+    }));
+    await docRef.set(dataToSave, { merge: true });
     console.log("Saved successfully!");
     
     // Revalidate relevant paths

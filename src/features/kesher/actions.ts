@@ -19,7 +19,9 @@ export async function getKesherSettings() {
 export async function saveKesherSettings(settings: any) {
   try {
     const docRef = adminDb.collection("settings").doc("kesher");
-    await docRef.set(settings, { merge: true });
+    // Automatically set isActive to true if credentials exist
+    const isActive = !!(settings.userName && settings.apiKey);
+    await docRef.set({ ...settings, isActive }, { merge: true });
     return { success: true };
   } catch (error) {
     console.error("Error saving Kesher settings:", error);
@@ -34,31 +36,37 @@ export async function createManualInvoice(data: any) {
     if (!session?.user) throw new Error("Unauthorized");
 
     const settings = await getKesherSettings();
-    if (!settings?.userName || !settings?.apiKey || !settings?.terminalNumber) {
-      return { success: false, error: "לא הוגדרו פרטי קשר (שם משתמש, סיסמה/API ומסוף) בלוח הבקרה." };
+    if (!settings?.userName || !settings?.apiKey) {
+      return { success: false, error: "לא הוגדרו פרטי קשר (שם משתמש וסיסמה) בלוח הבקרה." };
     }
 
-    // Attempting to send to Kesher API
+    if (!settings.ezCountToken) {
+      return { success: false, error: "לא הוגדר טוקן איזיקאונט בלוח הבקרה. טוקן זה חובה להפקת קבלות ידניות דרך קשר." };
+    }
+
+    // SendCashTransaction for Manual Receipts (Cash/Check/BankTransfer)
     const payload = {
-      func: "SendTransaction", 
-      tran: {
+      Json: {
         userName: settings.userName,
-        password: settings.apiKey,
-        TerminalNumber: settings.terminalNumber,
-        
-        ChargeOptionType: data.paymentType,
-        Total: Math.round(data.amount * 100),
-        ProjectNumber: data.receiptType || "405",
-        TransactionType: "debit",
-        
-        ClientName: data.clientName,
-        Details: data.details,
-        Phone: data.phone,
-        Zeout: data.zeout,
-        CheckNumber: data.checkNumber,
-        Bank: data.bankName,
-        Branch: data.branchNumber,
-        Account: data.accountNumber,
+        password: settings.ezCountToken, // User explicitly requested using EasyCount token here
+        func: "SendCashTransaction", 
+        format: "json",
+        cashTran: {
+          ChargeOptionType: data.paymentType, // "Cash", "Check", "BankTransfer"
+          Total: Math.round(data.amount * 100), // in agorot
+          ProjectNumber: data.receiptType || "405", // Receipt type
+          FirstName: data.clientName.split(" ")[0] || "",
+          LastName: data.clientName.split(" ").slice(1).join(" ") || "",
+          Phone: data.phone || "",
+          Tz: data.zeout || "",
+          Details: data.details || "",
+          // Extra fields for check or bank transfer
+          CheckNumber: data.checkNumber || "",
+          Bank: data.bankName || "",
+          Branch: data.branchNumber || "",
+          Account: data.accountNumber || "",
+          TransferRef: data.transferRef || ""
+        }
       },
       format: "json"
     };
@@ -78,6 +86,13 @@ export async function createManualInvoice(data: any) {
         result = responseText; // In case Kesher returns non-JSON ok message
       }
       
+      console.log("Kesher API Payload sent:", JSON.stringify(payload, null, 2));
+      console.log("Kesher API Response:", result);
+
+      if (result && (result.Status === false || result.status === "error" || result.error)) {
+        throw new Error(`שגיאה מקשר: ${result.Description || result.error || "ללא תיאור"} (קוד: ${result.Code || ""})`);
+      }
+      
       // Save to CRM contacts so it appears in the dashboard
       await adminDb.collection("contacts").add({
         ownerId: session.user.id || "1",
@@ -91,30 +106,72 @@ export async function createManualInvoice(data: any) {
         paymentType: data.paymentType,
         kesherStatus: typeof result === 'string' ? result : "Success"
       });
-      
-      return { success: true, message: "הקבלה נשמרה ב-CRM ונשלחה לקשר בהצלחה!" };
+      return { 
+        success: true, 
+        message: "הקבלה נשמרה ב-CRM ונשלחה לקשר בהצלחה!", 
+        kesherResult: result, 
+        payloadSent: payload 
+      };
 
-    } catch (apiError) {
-      // Fallback to local save if API structure mismatches
-      await adminDb.collection("contacts").add({
-        ownerId: session.user.id || "1",
-        name: data.clientName,
-        phone: data.phone || "",
-        email: "",
-        status: "Customer",
-        source: "Manual Receipt (Failed Kesher)",
-        amount: data.amount,
-        createdAt: new Date().toISOString(),
-        paymentType: data.paymentType,
-        kesherStatus: "Failed",
-        error: (apiError as Error).message
-      });
+    } catch (apiError: any) {
+      console.error("Kesher API Error during manual invoice:", apiError);
       
-      return { success: true, message: "הקבלה נשמרה ב-CRM המקומי (שגיאה בשליחה למערכת קשר, הנתונים תועדו)." };
+      // Do not save to CRM if Kesher explicitly failed
+      return { 
+        success: false, 
+        error: apiError.message || "שגיאה בשליחה למערכת קשר",
+        payloadSent: payload,
+        rawResponse: apiError.message
+      };
     }
 
   } catch (error: any) {
     console.error("Error creating manual invoice:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function connectEasyCount(ezCountToken: string) {
+  try {
+    const { auth } = await import("@/lib/auth");
+    const session = await auth();
+    if (!session?.user) throw new Error("Unauthorized");
+
+    const settings = await getKesherSettings();
+    if (!settings?.userName || !settings?.apiKey) {
+      return { success: false, error: "לא הוגדרו פרטי קשר (שם משתמש וסיסמה)." };
+    }
+
+    // Save the ezCountToken to settings
+    await saveKesherSettings({ ...settings, ezCountToken });
+
+    // The Kesher docs specify a GET request. We guess the parameters since they are missing from their table.
+    const url = new URL("https://kesherhk.info/KesherAPI/ConnectToEZCountService");
+    url.searchParams.append("userName", settings.userName);
+    url.searchParams.append("password", settings.apiKey);
+    url.searchParams.append("token", ezCountToken); // guessing the param name
+
+    const response = await fetch(url.toString(), {
+      method: "GET",
+    });
+
+    const resultText = await response.text();
+    let result;
+    try {
+      result = JSON.parse(resultText);
+    } catch {
+      result = { Message: resultText };
+    }
+
+    console.log("Kesher EasyCount Connect Response:", result);
+
+    if (result && result.Succeeded === false) {
+      return { success: false, error: result.Message || "שגיאה בחיבור לאיזיקאונט דרך קשר." };
+    }
+
+    return { success: true, message: result.Message || "חובר בהצלחה לאיזיקאונט!" };
+  } catch (error: any) {
+    console.error("Error connecting EasyCount:", error);
     return { success: false, error: error.message };
   }
 }

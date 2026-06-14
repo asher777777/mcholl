@@ -37,6 +37,20 @@ export async function rephraseTextWithAI(
   tone: "warm" | "elegant" | "punchy" | "storytelling" = "warm",
   customInstruction: string = ""
 ): Promise<{ success: boolean; text?: string; error?: string }> {
+  try {
+    const { auth } = await import("@/lib/auth");
+    const session = await auth();
+    const userId = session?.user?.id;
+    if (!userId) throw new Error("Unauthorized");
+    const { checkFeatureLimit } = await import("@/features/users/actions");
+    const limitCheck = await checkFeatureLimit(userId, "ai");
+    if (!limitCheck.allowed) {
+      return { success: false, error: "LIMIT_REACHED:" + ('message' in limitCheck ? limitCheck.message : "") };
+    }
+  } catch(e) {
+    // If not authenticated or error, we might just fail
+  }
+
   if (!text || !text.trim()) {
     return { success: false, error: "לא נשלח טקסט לניסוח" };
   }
@@ -118,6 +132,18 @@ export async function generateSeoTagsWithAI(
     return { success: false, error: "לא נשלח תוכן לניתוח" };
   }
 
+  try {
+    const { auth } = await import("@/lib/auth");
+    const session = await auth();
+    const userId = session?.user?.id;
+    if (!userId) throw new Error("Unauthorized");
+    const { checkFeatureLimit } = await import("@/features/users/actions");
+    const limitCheck = await checkFeatureLimit(userId, "ai");
+    if (!limitCheck.allowed) {
+      return { success: false, error: "LIMIT_REACHED:" + ('message' in limitCheck ? limitCheck.message : "") };
+    }
+  } catch(e) {}
+
   let apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
   if (!apiKey) {
     const aiSettings = await getAiSettings();
@@ -178,6 +204,17 @@ export async function generateSeoTagsWithAI(
 export async function generateSeoImageWithAI(
   promptStr: string
 ): Promise<{ success: boolean; imageUrl?: string; error?: string }> {
+  try {
+    const { auth } = await import("@/lib/auth");
+    const session = await auth();
+    const userId = session?.user?.id;
+    if (!userId) throw new Error("Unauthorized");
+    const { checkFeatureLimit } = await import("@/features/users/actions");
+    const limitCheck = await checkFeatureLimit(userId, "ai");
+    if (!limitCheck.allowed) {
+      return { success: false, error: "LIMIT_REACHED:" + ('message' in limitCheck ? limitCheck.message : "") };
+    }
+  } catch(e) {}
   let apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
   if (!apiKey) {
     const aiSettings = await getAiSettings();

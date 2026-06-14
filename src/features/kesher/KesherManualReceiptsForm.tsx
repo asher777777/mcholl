@@ -1,16 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createManualInvoice } from "./actions";
+import { getContacts } from "@/features/crm/actions";
 import { Button } from "@/components/ui/Button";
-import { CheckCircle2, AlertCircle, FileText, Banknote, Landmark } from "lucide-react";
+import { CheckCircle2, AlertCircle, FileText, Banknote, Landmark, CreditCard as CreditCardIcon } from "lucide-react";
+import { KesherCheckout } from "./KesherCheckout";
+import { Contact } from "@/features/crm/types";
 
 export function KesherManualReceiptsForm() {
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  
+  useEffect(() => {
+    // Fetch contacts from CRM to populate the datalist
+    getContacts({ per_page: 1000 }).then((res) => {
+      if (res && res.contacts) {
+        setContacts(res.contacts);
+      }
+    });
+  }, []);
+
   const [formData, setFormData] = useState({
     clientName: "",
     amount: "",
-    paymentType: "Cash" as "Cash" | "Check" | "BankTransfer",
-    receiptType: "405",
+    paymentType: "Cash" as "Cash" | "Check" | "BankTransfer" | "CreditCard",
+    receiptType: "000",
     zeout: "",
     phone: "",
     details: "",
@@ -47,6 +61,11 @@ export function KesherManualReceiptsForm() {
       });
 
       if (res.success) {
+        console.log("תוצאת השליחה לקשר (Kesher API Result):", res.kesherResult);
+        if (res.payloadSent) {
+          console.log("%cבקשה שנשלחה לקשר (מוכנה להעתקה):", "color: #0284c7; font-weight: bold; font-size: 14px;");
+          console.log(JSON.stringify(res.payloadSent, null, 2));
+        }
         setSuccess(res.message || "הקבלה הופקה בהצלחה ונשמרה בקשר!");
         // Reset form
         setFormData({
@@ -65,9 +84,19 @@ export function KesherManualReceiptsForm() {
           transferRef: "",
         });
       } else {
+        console.log("%cשגיאה מקשר:", "color: #dc2626; font-weight: bold; font-size: 14px;", res.error);
+        if (res.payloadSent) {
+          console.log("%cבקשה שנשלחה לקשר (מוכנה להעתקה):", "color: #0284c7; font-weight: bold; font-size: 14px;");
+          console.log(JSON.stringify(res.payloadSent, null, 2));
+        }
+        if (res.rawResponse) {
+          console.log("%cתשובה גולמית מקשר:", "color: #dc2626; font-weight: bold; font-size: 14px;");
+          console.log(res.rawResponse);
+        }
         setError(res.error || "שגיאה לא ידועה בהפקת הקבלה.");
       }
     } catch (err: any) {
+      console.error("Exception:", err);
       setError("שגיאת תקשורת: " + err.message);
     }
     setLoading(false);
@@ -95,12 +124,33 @@ export function KesherManualReceiptsForm() {
           <label className="block text-sm font-semibold mb-2 text-slate-700">שם התורם / הלקוח *</label>
           <input
             type="text"
+            list="crm-contacts-list"
             value={formData.clientName}
-            onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
+            onChange={(e) => {
+              const selectedName = e.target.value;
+              const contact = contacts.find(c => c.conta_name === selectedName);
+              if (contact) {
+                setFormData({
+                  ...formData, 
+                  clientName: selectedName,
+                  phone: contact.conta_phone || formData.phone,
+                });
+              } else {
+                setFormData({ ...formData, clientName: selectedName });
+              }
+            }}
             className="w-full h-12 px-4 bg-slate-50 border rounded-xl outline-none focus:ring-2 focus:ring-primary/20"
-            placeholder="למשל: ישראל ישראלי"
+            placeholder="בחר מרשימה או הקלד שם חדש"
             required
+            autoComplete="off"
           />
+          <datalist id="crm-contacts-list">
+            {contacts.map((c) => (
+              <option key={c.id} value={c.conta_name}>
+                {c.conta_phone ? `${c.conta_phone}` : ""}
+              </option>
+            ))}
+          </datalist>
         </div>
         
         <div>
@@ -117,16 +167,14 @@ export function KesherManualReceiptsForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-2 text-slate-700">סוג מסמך (קבלה)</label>
-          <select
+          <label className="block text-sm font-semibold mb-2 text-slate-700">מספר פרויקט</label>
+          <input
+            type="text"
             value={formData.receiptType}
             onChange={(e) => setFormData({ ...formData, receiptType: e.target.value })}
-            className="w-full h-12 px-4 bg-slate-50 border rounded-xl outline-none focus:ring-2 focus:ring-primary/20"
-          >
-            <option value="405">קבלת תרומה (405)</option>
-            <option value="400">קבלה רגילה (400)</option>
-            <option value="320">חשבונית מס קבלה (320)</option>
-          </select>
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700"
+            placeholder="000"
+          />
         </div>
 
         <div>
@@ -158,6 +206,15 @@ export function KesherManualReceiptsForm() {
               }`}
             >
               <Landmark className="w-4 h-4" /> העברה
+            </button>
+            <button
+              type="button"
+              onClick={() => setFormData({ ...formData, paymentType: "CreditCard" })}
+              className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-semibold rounded-lg transition-colors ${
+                formData.paymentType === "CreditCard" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              <CreditCardIcon className="w-4 h-4" /> אשראי
             </button>
           </div>
         </div>
@@ -303,9 +360,27 @@ export function KesherManualReceiptsForm() {
       )}
 
       <div className="pt-4 border-t">
-        <Button type="submit" disabled={loading} className="w-full md:w-auto h-12 px-8 font-bold text-lg">
-          {loading ? "מפיק קבלה..." : "הפק קבלה בקשר"}
-        </Button>
+        {formData.paymentType === "CreditCard" ? (
+          <div className="space-y-4">
+            {!formData.clientName || !formData.amount ? (
+              <div className="p-4 bg-amber-50 text-amber-800 rounded-xl text-sm border border-amber-200">
+                נא להזין שם לקוח וסכום לפני המעבר לסליקה באשראי.
+              </div>
+            ) : (
+              <KesherCheckout 
+                amount={Number(formData.amount)} 
+                clientName={formData.clientName} 
+                phone={formData.phone} 
+                description={formData.details || `סליקה מלוח הבקרה עבור ${formData.clientName}`} 
+                onSuccess={() => setSuccess("הסליקה בוצעה בהצלחה!")}
+              />
+            )}
+          </div>
+        ) : (
+          <Button type="submit" disabled={loading} className="w-full md:w-auto h-12 px-8 font-bold text-lg">
+            {loading ? "מפיק קבלה..." : "הפק קבלה בקשר"}
+          </Button>
+        )}
       </div>
 
     </form>

@@ -7,6 +7,8 @@ import { DashboardQuickActions } from "./DashboardQuickActions";
 import { adminDb } from "@/lib/firebase-admin";
 import { auth } from "@/lib/auth";
 
+import { DashboardViewManager } from "@/components/dashboard/DashboardViewManager";
+
 async function getUserId(): Promise<string> {
   try {
     const session = await auth();
@@ -45,10 +47,10 @@ export default async function DashboardPage() {
       .catch(() => 0)
   ]);
 
-  return (
+  const classicDashboard = (
     <div className="space-y-6 text-right" dir="rtl">
       
-      {/* Stats Badges Row (Replaces the big squares with compact tooltip badges) */}
+      {/* Stats Badges Row */}
       <div className="flex flex-wrap items-center gap-2.5 justify-start">
         <StatBadge 
           icon={<Users className="w-4 h-4 text-indigo-600" />} 
@@ -128,5 +130,9 @@ export default async function DashboardPage() {
         )}
       </div>
     </div>
+  );
+
+  return (
+    <DashboardViewManager classicDashboard={classicDashboard} />
   );
 }
