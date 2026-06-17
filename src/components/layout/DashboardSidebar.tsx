@@ -20,7 +20,8 @@ import {
   Menu,
   X,
   Zap,
-  Calendar
+  Calendar,
+  Bot
 } from "lucide-react";
 import { QuickActionsModal } from "./QuickActionsModal";
 import { Button } from "@/components/ui/Button";
@@ -81,6 +82,7 @@ export function DashboardSidebar({ className }: DashboardSidebarProps) {
       title: "ראשי",
       links: [
         { name: "לוח בקרה", href: "/dashboard", icon: LayoutDashboard },
+        { name: "הקמת קהילה ב-AI", href: "/dashboard/community-generator", icon: Bot },
         { name: "יומן מסונכרן", href: "/dashboard/calendar", icon: Calendar },
         { name: "ניהול CRM", href: "/dashboard/crm", icon: Users },
         { name: "קבלות ידניות", href: "/dashboard/receipts", icon: FileText },
